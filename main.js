@@ -321,13 +321,13 @@ function paintBoard() {
 }
 
 function clearPieces(board) {
-  board.querySelectorAll(".piece").forEach((piece) => piece.remove());
+  board.querySelectorAll(".man").forEach((piece) => piece.remove());
   for (let y = 0; y < 8; y += 1) pikePieces[y].fill(null);
 }
 
 function putPiece(board, x, y, code) {
   const piece = document.createElement("b");
-  piece.className = `piece ${code === code.toUpperCase() ? "w" : "b"}`;
+  piece.className = `man ${code === code.toUpperCase() ? "w" : "b"}`;
   piece.textContent = glyphs[code];
   piece.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
   board.append(piece);

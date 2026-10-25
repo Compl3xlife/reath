@@ -889,7 +889,7 @@ h2 {
 .board i { background: var(--board-alt); }
 .board i.dark { background: var(--board); }
 .board i.hot { box-shadow: inset 0 0 0 2px var(--lime); }
-.piece {
+.man {
   position: absolute;
   left: 0;
   top: 0;
@@ -907,9 +907,9 @@ h2 {
   background: radial-gradient(circle at 50% 54%, var(--disc) 0 42%, transparent 44%);
   pointer-events: none;
 }
-.piece.w { --disc: var(--lime); color: #14160a; }
-.piece.b { --disc: #1c1e2a; color: #f4f0e6; }
-.piece.moving { z-index: 2; }
+.man.w { --disc: var(--lime); color: #14160a; }
+.man.b { --disc: #1c1e2a; color: #f4f0e6; }
+.man.moving { z-index: 2; }
 
 .devices {
   display: flex;
