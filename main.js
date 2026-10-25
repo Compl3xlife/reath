@@ -10,6 +10,9 @@ const ids = tabs.map((tab) => tab.id.replace("tab-", ""));
 let index = 0;
 let termTimer = 0;
 let pikeTimer = 0;
+let pikeRun = 0;
+let lanTimer = 0;
+let lanRun = 0;
 let counted = false;
 
 function fit() {
@@ -82,12 +85,17 @@ function onEnter(id) {
   if (id === "profile") countStats();
   if (id === "skills") playRig(currentRig, true);
   if (id === "backend") {
-    const current = document.querySelector('[data-reel="back"] .work-list .is-on');
-    if (current?.dataset.scene === "opus") startTerm();
-    if (current?.dataset.scene === "pike") startPike();
+    const scene = document.querySelector('[data-reel="back"] .work-list .is-on')?.dataset.scene;
+    if (scene === "opus") startTerm();
+    else stopTerm();
+    if (scene === "pike") startPike();
+    else stopPike();
+    if (scene === "lan") startLan();
+    else stopLan();
   } else {
     stopTerm();
     stopPike();
+    stopLan();
   }
 }
 
@@ -195,16 +203,20 @@ function showScene(reel, button) {
   else stopTerm();
   if (button.dataset.scene === "pike") startPike();
   else stopPike();
+  if (button.dataset.scene === "lan") startLan();
+  else stopLan();
   fit();
 }
 
-const lines = [
-  ["dim", "wake word armed"],
-  ["user", "> Opus, what's on my screen?"],
-  ["ok", "reading the active tab"],
-  ["ok", "tray · phone · discord chips"],
-  ["ok", "listening again"],
+const talk = [
+  { who: "sys", text: "Listening for Opus" },
+  { who: "you", text: "Opus, what's on my screen?" },
+  { who: "opus", text: "The resume. Backend tab, Opus selected." },
+  { who: "you", text: "Open the phone app." },
+  { who: "opus", text: "It's on your home screen. Same voice, smaller window." },
+  { who: "sys", text: "Listening again" },
 ];
+let termRun = 0;
 
 document.querySelectorAll(".work").forEach((reel) => {
   const first = reel.querySelector(".work-list button");
@@ -215,71 +227,231 @@ document.querySelectorAll(".work").forEach((reel) => {
 });
 
 function stopTerm() {
+  termRun += 1;
   window.clearTimeout(termTimer);
+}
+
+function addBubble(thread, line) {
+  const bubble = document.createElement("p");
+  bubble.className = `bubble ${line.who}`;
+  bubble.textContent = line.text;
+  thread.append(bubble);
+  bubble.animate(
+    [
+      { opacity: 0, transform: "translateY(8px)" },
+      { opacity: 1, transform: "none" },
+    ],
+    { duration: 280, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" },
+  );
 }
 
 function startTerm() {
   stopTerm();
-  const out = document.querySelector("#term-out");
-  if (!out) return;
-  out.textContent = "";
-  if (reduce) {
-    out.textContent = lines.map(([, text]) => text).join("\n");
-    return;
-  }
-  let row = 0;
-  let char = 0;
-  const tick = () => {
-    if (row >= lines.length) return;
-    const text = lines[row][1];
-    char += 1;
-    out.textContent = lines
-      .slice(0, row)
-      .map(([, line]) => line)
-      .concat(text.slice(0, char))
-      .join("\n");
-    if (char >= text.length) {
-      row += 1;
-      char = 0;
-      termTimer = window.setTimeout(tick, 280);
-    } else {
-      termTimer = window.setTimeout(tick, 18);
+  const run = termRun;
+  const thread = document.querySelector("#opus-thread");
+  if (!thread) return;
+  thread.replaceChildren();
+  let step = 0;
+  const next = () => {
+    if (run !== termRun) return;
+    if (step >= talk.length) {
+      termTimer = window.setTimeout(() => {
+        if (run === termRun) startTerm();
+      }, 1300);
+      return;
     }
+    const line = talk[step];
+    step += 1;
+    if (line.who === "opus") {
+      const typing = document.createElement("p");
+      typing.className = "bubble opus typing";
+      for (let i = 0; i < 3; i += 1) {
+        const dot = document.createElement("i");
+        typing.append(dot);
+        dot.animate(
+          [{ opacity: 0.2 }, { opacity: 1 }, { opacity: 0.2 }],
+          { duration: 700, delay: i * 140, iterations: Infinity },
+        );
+      }
+      thread.append(typing);
+      termTimer = window.setTimeout(() => {
+        if (run !== termRun) return;
+        typing.remove();
+        addBubble(thread, line);
+        termTimer = window.setTimeout(next, 780);
+      }, 620);
+      return;
+    }
+    addBubble(thread, line);
+    termTimer = window.setTimeout(next, line.who === "sys" ? 460 : 700);
   };
-  tick();
+  next();
 }
 
-const knightPath = [12, 3, 6, 15, 4, 21, 12];
-let pikeStep = 0;
+const glyphs = {
+  K: "\u2654", Q: "\u2655", R: "\u2656", B: "\u2657", N: "\u2658", P: "\u2659",
+  k: "\u265A", q: "\u265B", r: "\u265C", b: "\u265D", n: "\u265E", p: "\u265F",
+};
+const pikeGame = [
+  ["e2", "e4"],
+  ["e7", "e5"],
+  ["d1", "h5"],
+  ["b8", "c6"],
+  ["f1", "c4"],
+  ["g8", "f6"],
+  ["h5", "f7"],
+];
+const pikePieces = Array.from({ length: 8 }, () => Array(8).fill(null));
+
+function pikeSquare(code) {
+  return { x: code.charCodeAt(0) - 97, y: 8 - Number(code[1]) };
+}
 
 function paintBoard() {
   const board = document.querySelector("#board");
   if (!board || board.dataset.ready) return;
   board.dataset.ready = "true";
-  const knight = document.querySelector("#knight");
-  for (let i = 0; i < 25; i += 1) {
-    const cell = document.createElement("i");
-    board.insertBefore(cell, knight);
+  for (let y = 0; y < 8; y += 1) {
+    for (let x = 0; x < 8; x += 1) {
+      const cell = document.createElement("i");
+      if ((x + y) % 2 === 1) cell.className = "dark";
+      board.append(cell);
+    }
   }
 }
 
+function clearPieces(board) {
+  board.querySelectorAll(".piece").forEach((piece) => piece.remove());
+  for (let y = 0; y < 8; y += 1) pikePieces[y].fill(null);
+}
+
+function putPiece(board, x, y, code) {
+  const piece = document.createElement("b");
+  piece.className = `piece ${code === code.toUpperCase() ? "w" : "b"}`;
+  piece.textContent = glyphs[code];
+  piece.style.transform = `translate(${x * 100}%, ${y * 100}%)`;
+  board.append(piece);
+  pikePieces[y][x] = piece;
+}
+
+function resetPike(board) {
+  clearPieces(board);
+  board.querySelectorAll("i").forEach((cell) => cell.classList.remove("hot"));
+  const back = "rnbqkbnr";
+  for (let x = 0; x < 8; x += 1) {
+    putPiece(board, x, 0, back[x]);
+    putPiece(board, x, 1, "p");
+    putPiece(board, x, 6, "P");
+    putPiece(board, x, 7, back[x].toUpperCase());
+  }
+}
+
+function markPike(board, from, to) {
+  const cells = [...board.querySelectorAll("i")];
+  cells.forEach((cell) => cell.classList.remove("hot"));
+  cells[from.y * 8 + from.x]?.classList.add("hot");
+  cells[to.y * 8 + to.x]?.classList.add("hot");
+}
+
+function slidePiece(piece, x, y) {
+  const next = `translate(${x * 100}%, ${y * 100}%)`;
+  piece.classList.add("moving");
+  const motion = piece.animate(
+    [{ transform: piece.style.transform }, { transform: next }],
+    { duration: 460, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" },
+  );
+  return motion.finished.then(() => {
+    piece.style.transform = next;
+    piece.classList.remove("moving");
+  });
+}
+
 function stopPike() {
-  window.clearInterval(pikeTimer);
+  pikeRun += 1;
+  window.clearTimeout(pikeTimer);
 }
 
 function startPike() {
-  paintBoard();
   stopPike();
-  const knight = document.querySelector("#knight");
-  const hop = () => {
-    const cell = knightPath[pikeStep % knightPath.length];
-    const col = cell % 5;
-    const row = Math.floor(cell / 5);
-    knight.style.transform = `translate(${col * 100}%, ${row * 100}%)`;
-    pikeStep += 1;
+  const run = pikeRun;
+  const board = document.querySelector("#board");
+  if (!board) return;
+  paintBoard();
+  resetPike(board);
+  let move = 0;
+  const play = () => {
+    if (run !== pikeRun) return;
+    if (move >= pikeGame.length) {
+      pikeTimer = window.setTimeout(() => {
+        if (run !== pikeRun) return;
+        resetPike(board);
+        move = 0;
+        pikeTimer = window.setTimeout(play, 500);
+      }, 1100);
+      return;
+    }
+    const [fromCode, toCode] = pikeGame[move];
+    move += 1;
+    const from = pikeSquare(fromCode);
+    const to = pikeSquare(toCode);
+    const piece = pikePieces[from.y][from.x];
+    const captured = pikePieces[to.y][to.x];
+    if (!piece) {
+      play();
+      return;
+    }
+    pikePieces[from.y][from.x] = null;
+    pikePieces[to.y][to.x] = piece;
+    markPike(board, from, to);
+    slidePiece(piece, to.x, to.y).then(() => {
+      if (captured) captured.remove();
+      if (run !== pikeRun) return;
+      pikeTimer = window.setTimeout(play, 280);
+    });
   };
-  hop();
-  if (!reduce) pikeTimer = window.setInterval(hop, 700);
+  pikeTimer = window.setTimeout(play, 400);
+}
+
+function stopLan() {
+  lanRun += 1;
+  window.clearTimeout(lanTimer);
+}
+
+function startLan() {
+  stopLan();
+  const run = lanRun;
+  const phone = document.querySelector(".handset .lcd");
+  const desk = document.querySelector(".desktop .lcd");
+  const packet = document.querySelector(".cast i");
+  if (!phone || !desk) return;
+  let frame = 0;
+  phone.dataset.frame = "0";
+  desk.dataset.frame = "0";
+  const share = () => {
+    if (run !== lanRun) return;
+    frame = (frame + 1) % 3;
+    phone.dataset.frame = String(frame);
+    if (packet) {
+      packet.animate(
+        [
+          { transform: "translateX(0)", opacity: 0 },
+          { transform: "translateX(8px)", opacity: 1, offset: 0.15 },
+          { transform: "translateX(56px)", opacity: 0 },
+        ],
+        { duration: 680, easing: "ease-in-out" },
+      );
+    }
+    lanTimer = window.setTimeout(() => {
+      if (run !== lanRun) return;
+      desk.dataset.frame = String(frame);
+      desk.animate(
+        [{ filter: "brightness(1.8)" }, { filter: "brightness(1)" }],
+        { duration: 320, easing: "ease-out" },
+      );
+      lanTimer = window.setTimeout(share, 1250);
+    }, 640);
+  };
+  lanTimer = window.setTimeout(share, 800);
 }
 
 const rigStage = document.querySelector("#rig-stage");
@@ -441,26 +613,105 @@ if (!reduce) {
 
 const blinkerTrack = document.querySelector(".demo.track");
 const blinkerCar = blinkerTrack?.querySelector(".car");
-const blinkerWheels = blinkerTrack ? [...blinkerTrack.querySelectorAll(".wheel")] : [];
-let blinkerStart = 0;
+const blinkerFront = blinkerTrack ? [...blinkerTrack.querySelectorAll(".wheel.fl, .wheel.fr")] : [];
+const blinkerLamp = blinkerCar?.querySelector(".lamp");
+const axle = { x: 22, y: 18 };
+const wheelbase = 50;
+let blinkerLast = 0;
+let blinkerDist = 0;
+
+function roadPad() {
+  const style = getComputedStyle(blinkerTrack);
+  const x = parseFloat(style.getPropertyValue("--road-x"));
+  const y = parseFloat(style.getPropertyValue("--road-y"));
+  return {
+    x: Number.isFinite(x) ? x : 78,
+    y: Number.isFinite(y) ? y : 48,
+  };
+}
+
+function roadPose(dist, width, height) {
+  const pad = roadPad();
+  const cw = Math.max(36, width - pad.x * 2);
+  const ch = Math.max(36, height - pad.y * 2);
+  const cx = width / 2;
+  const cy = height / 2;
+  const horizontal = cw >= ch;
+  const radius = (horizontal ? ch : cw) / 2;
+  const straight = Math.abs(cw - ch);
+  const arc = Math.PI * radius;
+  const length = straight * 2 + arc * 2;
+  let s = dist % length;
+  if (s < 0) s += length;
+  let x;
+  let y;
+  let heading;
+
+  if (horizontal) {
+    const half = straight / 2;
+    if (s < straight) {
+      x = cx - half + s;
+      y = cy - radius;
+      heading = 0;
+    } else if (s < straight + arc) {
+      const angle = -Math.PI / 2 + (s - straight) / radius;
+      x = cx + half + Math.cos(angle) * radius;
+      y = cy + Math.sin(angle) * radius;
+      heading = Math.atan2(Math.cos(angle), -Math.sin(angle));
+    } else if (s < straight * 2 + arc) {
+      x = cx + half - (s - straight - arc);
+      y = cy + radius;
+      heading = Math.PI;
+    } else {
+      const angle = Math.PI / 2 + (s - straight * 2 - arc) / radius;
+      x = cx - half + Math.cos(angle) * radius;
+      y = cy + Math.sin(angle) * radius;
+      heading = Math.atan2(Math.cos(angle), -Math.sin(angle));
+    }
+  } else if (s < straight) {
+    x = cx + radius;
+    y = cy - straight / 2 + s;
+    heading = Math.PI / 2;
+  } else if (s < straight + arc) {
+    const angle = (s - straight) / radius;
+    x = cx + Math.cos(angle) * radius;
+    y = cy + straight / 2 + Math.sin(angle) * radius;
+    heading = Math.atan2(Math.cos(angle), -Math.sin(angle));
+  } else if (s < straight * 2 + arc) {
+    x = cx - radius;
+    y = cy + straight / 2 - (s - straight - arc);
+    heading = -Math.PI / 2;
+  } else {
+    const angle = Math.PI + (s - straight * 2 - arc) / radius;
+    x = cx + Math.cos(angle) * radius;
+    y = cy - straight / 2 + Math.sin(angle) * radius;
+    heading = Math.atan2(Math.cos(angle), -Math.sin(angle));
+  }
+
+  return { x, y, heading, length };
+}
 
 function driveBlinker(now) {
-  if (!blinkerStart) blinkerStart = now;
+  if (!blinkerLast) blinkerLast = now;
+  const dt = Math.min(now - blinkerLast, 34);
+  blinkerLast = now;
   const width = blinkerTrack.clientWidth;
   const height = blinkerTrack.clientHeight;
-  if (width && height) {
-    const lap = ((now - blinkerStart) % 9000) / 9000;
-    const angle = lap * Math.PI * 2 - Math.PI / 2;
-    const rx = Math.max(48, width * 0.34);
-    const ry = Math.max(28, height * 0.28);
-    const x = width / 2 + Math.cos(angle) * rx - blinkerCar.offsetWidth / 2;
-    const y = height / 2 + Math.sin(angle) * ry - blinkerCar.offsetHeight / 2;
-    const heading = (angle * 180) / Math.PI + 90;
-    blinkerCar.style.transform = `translate(${x}px, ${y}px) rotate(${heading}deg)`;
-    const spin = ((now - blinkerStart) / 260) * 360;
-    blinkerWheels.forEach((wheel) => {
-      wheel.style.transform = `rotate(${spin}deg)`;
+  if (width && height && dt > 0) {
+    const step = 0.12 * dt;
+    blinkerDist += step;
+    const rear = roadPose(blinkerDist, width, height);
+    const front = roadPose(blinkerDist + wheelbase, width, height);
+    const heading = Math.atan2(front.y - rear.y, front.x - rear.x);
+    blinkerCar.style.transform = `translate(${rear.x - axle.x}px, ${rear.y - axle.y}px) rotate(${(heading * 180) / Math.PI}deg)`;
+    const nose = roadPose(blinkerDist + wheelbase + 28, width, height);
+    let steer = Math.atan2(nose.y - front.y, nose.x - front.x) - heading;
+    steer = Math.atan2(Math.sin(steer), Math.cos(steer));
+    const steerDeg = Math.max(-30, Math.min(30, (steer * 180) / Math.PI * 1.7));
+    blinkerFront.forEach((wheel) => {
+      wheel.style.transform = `rotate(${steerDeg}deg)`;
     });
+    if (blinkerLamp) blinkerLamp.style.opacity = Math.floor(now / 260) % 2 ? "1" : "0.35";
   }
   requestAnimationFrame(driveBlinker);
 }

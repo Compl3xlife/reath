@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=16" />
 </head>
 <body>
   <a class="skip" href="#switcher">Skip to sections</a>
@@ -247,11 +247,12 @@
                 <div class="scene" data-scene="blinker">
                   <div class="demo track">
                     <div class="car">
-                      <div class="cabin"></div>
-                      <div class="body"></div>
-                      <i class="lamp"></i>
-                      <i class="wheel front"></i>
-                      <i class="wheel back"></i>
+                      <i class="shade"></i>
+                      <i class="wheel bl"></i>
+                      <i class="wheel br"></i>
+                      <i class="wheel fl"></i>
+                      <i class="wheel fr"></i>
+                      <b class="shell"><i class="screen"></i><i class="hood"></i><i class="lamp"></i></b>
                     </div>
                   </div>
                   <pre class="snippet"><span class="file">Cars.jsx</span><code>useEffect(() =&gt; {
@@ -319,7 +320,7 @@ function closeMenu() {
                   <div class="demo">
                     <div class="term">
                       <header><i></i><i></i><i></i><span>opus</span></header>
-                      <pre id="term-out"></pre>
+                      <div class="thread" id="opus-thread"></div>
                     </div>
                   </div>
                   <pre class="snippet"><span class="file">tray.py</span><code>self.icon = pystray.Icon(
@@ -335,9 +336,7 @@ function closeMenu() {
                 </div>
                 <div class="scene" data-scene="pike">
                   <div class="demo">
-                    <div class="board" id="board">
-                      <div class="knight" id="knight">N</div>
-                    </div>
+                    <div class="board" id="board"></div>
                   </div>
                   <pre class="snippet"><span class="file">search.py</span><code>for depth in range(1, max_depth + 1):
     if self._time_up() and depth &gt; 1:
@@ -350,11 +349,15 @@ function closeMenu() {
                 <div class="scene" data-scene="lan">
                   <div class="demo">
                     <div class="devices">
-                      <div class="phone"></div>
-                      <svg class="beam" viewBox="0 0 140 16" aria-hidden="true">
-                        <line x1="0" y1="8" x2="140" y2="8" />
-                      </svg>
-                      <div class="monitor"><b></b></div>
+                      <div class="handset">
+                        <div class="lcd" data-frame="0"><span class="bar"></span><span class="tile a"></span><span class="tile b"></span><span class="tile c"></span></div>
+                      </div>
+                      <div class="cast" aria-hidden="true"><i></i></div>
+                      <div class="desktop">
+                        <div class="bezel"><div class="lcd" data-frame="0"><span class="bar"></span><span class="tile a"></span><span class="tile b"></span><span class="tile c"></span></div></div>
+                        <i class="neck"></i>
+                        <i class="foot"></i>
+                      </div>
                     </div>
                   </div>
                   <pre class="snippet"><span class="file">app.py</span><code>app = FastAPI(title="LAN Mirror", lifespan=lifespan)
@@ -461,6 +464,6 @@ void setRestockUpgrade(boolean restockUpgrade) {
       .stage { height: auto !important; overflow: visible !important; }
     </style>
   </noscript>
-  <script type="module" src="main.js?v=12"></script>
+  <script type="module" src="main.js?v=16"></script>
 </body>
 </html>

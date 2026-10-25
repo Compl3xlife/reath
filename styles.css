@@ -668,65 +668,92 @@ h2 {
   text-transform: uppercase;
 }
 
+.demo.track {
+  --road-x: 52px;
+  --road-y: 30px;
+  --road-stroke: 30px;
+}
 .demo.track::before {
   content: "";
   position: absolute;
-  inset: 16% 8%;
-  border: 12px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  inset: calc(var(--road-y) - var(--road-stroke) / 2) calc(var(--road-x) - var(--road-stroke) / 2);
+  border: var(--road-stroke) solid color-mix(in srgb, var(--ink) 18%, transparent);
   border-radius: 999px;
 }
 .car {
   position: absolute;
   left: 0;
   top: 0;
-  width: 148px;
-  height: 54px;
+  width: 90px;
+  height: 36px;
+  transform-origin: 22px 18px;
+  transition: none;
 }
-.body {
+.shade {
   position: absolute;
-  left: 8px;
+  left: 10px;
   right: 6px;
-  bottom: 10px;
-  height: 22px;
-  background: var(--ink);
-  border-radius: 5px 14px 4px 4px;
+  top: 8px;
+  bottom: 6px;
+  background: color-mix(in srgb, #000 40%, transparent);
+  filter: blur(5px);
+  border-radius: 40%;
+  transform: translate(2px, 4px);
 }
-.cabin {
+.shell {
   position: absolute;
-  left: 48px;
-  bottom: 30px;
-  width: 52px;
-  height: 18px;
+  left: 12px;
+  right: 6px;
+  top: 7px;
+  bottom: 7px;
+  background: var(--ink);
+  border-radius: 7px 13px 13px 7px;
+}
+.screen {
+  position: absolute;
+  left: 28px;
+  right: 22px;
+  top: 3px;
+  bottom: 3px;
   background: var(--lime);
-  clip-path: polygon(12% 100%, 28% 0, 88% 0, 100% 100%);
+  border-radius: 2px 5px 5px 2px;
+}
+.hood {
+  position: absolute;
+  right: 9px;
+  top: 4px;
+  bottom: 4px;
+  width: 10px;
+  border-left: 1px solid color-mix(in srgb, var(--stage) 55%, transparent);
 }
 .lamp {
   position: absolute;
-  right: 4px;
-  bottom: 16px;
-  width: 8px;
-  height: 6px;
+  right: 2px;
+  top: 5px;
+  width: 3px;
+  height: 4px;
   background: var(--lime);
+  border-radius: 1px;
+  box-shadow: 0 10px 0 var(--lime), 0 0 8px var(--lime);
 }
-.scene.play .lamp { animation: blink 0.55s steps(2) infinite; }
 .wheel {
   position: absolute;
-  bottom: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 50% 50%, var(--stage) 0 3px, transparent 4px),
-    repeating-conic-gradient(var(--stage) 0 12deg, var(--ink) 12deg 24deg);
+  width: 10px;
+  height: 8px;
+  border-radius: 2px;
+  background: #14160c;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--stage) 72%, #14160c);
+  transform-origin: center;
 }
-.wheel.back { left: 24px; }
-.wheel.front { right: 22px; }
-.wheel { transform-origin: center; }
+.wheel.bl, .wheel.br { left: 17px; }
+.wheel.fl, .wheel.fr { left: 67px; }
+.wheel.bl, .wheel.fl { top: 0; }
+.wheel.br, .wheel.fr { bottom: 0; }
 
 .demo .term,
-.demo .devices { width: min(100%, 440px); }
-.demo .term { height: min(250px, 92%); }
-.demo .board { width: min(230px, 88%); }
+.demo .devices { width: min(100%, 460px); }
+.demo .term { height: min(268px, 94%); }
+.demo .board { width: min(300px, 100%); }
 
 .shelf {
   position: relative;
@@ -801,58 +828,161 @@ h2 {
   line-height: 1.55;
   color: var(--term-text);
 }
+.thread {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  padding: 0.7rem 0.75rem 0.8rem;
+}
+.bubble {
+  margin: 0;
+  max-width: 90%;
+  padding: 0.38rem 0.6rem;
+  border-radius: 2px;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.bubble.you {
+  align-self: flex-end;
+  background: var(--lime);
+  color: var(--lime-ink);
+}
+.bubble.opus {
+  align-self: flex-start;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.bubble.sys {
+  align-self: center;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.bubble.typing {
+  display: flex;
+  gap: 0.28rem;
+  align-items: center;
+  min-height: 1.5rem;
+}
+.bubble.typing i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lime);
+}
 
 .board {
   position: relative;
-  width: min(280px, 78%);
+  width: min(300px, 100%);
   aspect-ratio: 1;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   border: 1px solid var(--line);
 }
-.board i {
-  border: 1px solid var(--line);
-  background: var(--board);
-}
-.board i:nth-child(odd) { background: var(--board-alt); }
-.knight {
+.board i { background: var(--board-alt); }
+.board i.dark { background: var(--board); }
+.board i.hot { box-shadow: inset 0 0 0 2px var(--lime); }
+.piece {
   position: absolute;
-  width: 20%;
-  height: 20%;
+  left: 0;
+  top: 0;
+  width: 12.5%;
+  height: 12.5%;
+  min-width: 0;
+  min-height: 0;
   display: grid;
   place-items: center;
-  background: var(--lime);
-  color: var(--lime-ink);
-  font-family: var(--display);
-  font-weight: 700;
-  transition: transform 0.45s var(--ease);
+  overflow: hidden;
+  font-family: "Segoe UI Symbol", "Segoe UI", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1;
+  background: radial-gradient(circle at 50% 54%, var(--disc) 0 42%, transparent 44%);
+  pointer-events: none;
 }
+.piece.w { --disc: var(--lime); color: #14160a; }
+.piece.b { --disc: #1c1e2a; color: #f4f0e6; }
+.piece.moving { z-index: 2; }
 
 .devices {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  width: min(460px, 90%);
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.45rem;
+  width: min(100%, 460px);
 }
-.phone, .monitor {
+.handset {
+  width: 78px;
+  height: 150px;
+  flex: 0 0 auto;
+  padding: 8px 6px 7px;
   border: 1px solid var(--ink);
+  border-radius: 14px;
   background: var(--card);
 }
-.phone { width: 74px; height: 140px; border-radius: 12px; box-shadow: inset 0 0 0 6px var(--stage); }
-.monitor { flex: 1; height: 150px; border-radius: 8px; padding: 10px; }
-.monitor b {
-  display: block;
+.desktop { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.desktop .bezel {
+  width: 100%;
+  height: 132px;
+  padding: 8px;
+  border: 1px solid var(--ink);
+  border-radius: 8px;
+  background: var(--card);
+}
+.desktop .neck { width: 16px; height: 10px; background: var(--ink); }
+.desktop .foot { width: 52px; height: 4px; background: var(--ink); }
+.lcd {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 8px 1fr 1fr;
+  gap: 4px;
   height: 100%;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--lime) 28%, transparent), transparent 40%), var(--stage);
+  padding: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--stage);
 }
-.beam { width: 90px; height: 16px; }
-.beam line {
-  stroke: var(--lime);
-  stroke-width: 2;
-  stroke-dasharray: 7 9;
+.lcd .bar { grid-column: 1 / -1; background: var(--lime); border-radius: 1px; }
+.lcd .tile { background: color-mix(in srgb, var(--indigo) 72%, var(--stage)); border-radius: 2px; }
+.lcd[data-frame="1"] .tile.a { grid-column: 1 / -1; background: var(--lime); }
+.lcd[data-frame="1"] .tile.b { display: none; }
+.lcd[data-frame="2"] .tile.c { grid-column: 1 / -1; grid-row: 2 / span 2; background: var(--ink); }
+.lcd[data-frame="2"] .tile.a,
+.lcd[data-frame="2"] .tile.b { display: none; }
+.lcd[data-frame="2"] .bar { background: var(--indigo); }
+.cast {
+  position: relative;
+  width: 64px;
+  height: 132px;
+  flex: 0 0 auto;
 }
-.scene.play .beam line { animation: dash 0.8s linear infinite; }
+.cast::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  height: 2px;
+  background: color-mix(in srgb, var(--lime) 45%, transparent);
+}
+.cast i {
+  position: absolute;
+  top: calc(46% - 3px);
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 10px var(--lime);
+  opacity: 0;
+}
 
 .pack {
   display: grid;
