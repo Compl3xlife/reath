@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    try {
+      var savedTheme = localStorage.getItem("reath-theme");
+      var theme = savedTheme === "light" || savedTheme === "dark"
+        ? savedTheme
+        : (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      document.documentElement.dataset.theme = theme;
+    } catch (error) {}
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matthew Reath — Frontend &amp; Systems</title>
+  <meta name="description" content="Matthew Reath. FES Institute frontend graduate. Sliding interfaces, React work, and backend systems led by Opus." />
+  <meta name="theme-color" content="#07080b" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=12" />
+</head>
+<body>
+  <a class="skip" href="#switcher">Skip to sections</a>
+  <header class="top">
+    <a class="brand" href="#profile" data-jump="profile">
+      <span class="brand-mark" aria-hidden="true"></span>
+      Matthew Reath
+    </a>
+    <p class="top-kicker">Frontend · Systems</p>
+    <nav class="top-links" aria-label="Direct">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light mode">
+        <span class="sun" aria-hidden="true"></span>
+        <span class="moon" aria-hidden="true"></span>
+      </button>
+      <a href="https://github.com/Compl3xlife" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="mailto:matthewreath01@gmail.com">Email</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <canvas id="field" aria-hidden="true"></canvas>
+      <div class="hero-copy">
+        <p class="eyebrow">FES Institute · Frontend development</p>
+        <h1>
+          <span class="line">Matthew</span>
+          <span class="line outline">Reath<i class="sq" aria-hidden="true"></i></span>
+        </h1>
+        <p class="lede">
+          Interfaces that move on purpose, and systems that keep running after the tab closes.
+          Opus is the backend I put forward. The certificate is on this page.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-lime" type="button" data-jump="frontend">Watch the frontend</button>
+          <button class="btn btn-ghost" type="button" data-jump="backend">Open Opus</button>
+          <button class="btn btn-ghost" type="button" data-jump="certificate">Certificate</button>
+          <a class="btn btn-ghost" href="https://github.com/Compl3xlife" target="_blank" rel="noreferrer">github.com/Compl3xlife</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase" aria-label="Selected work">
+      <div class="showcase-track" id="showcase-track">
+        <div class="showcase-set">
+          <a class="piece" href="https://github.com/Compl3xlife/opus" target="_blank" rel="noreferrer">
+            <span>Python</span>
+            <strong>Opus</strong>
+            <em>GitHub</em>
+          </a>
+          <a class="piece" href="https://angelesque444.angelesque444.workers.dev/" target="_blank" rel="noreferrer">
+            <span>JavaScript · Node</span>
+            <strong>Atelier</strong>
+            <em>Gallery</em>
+          </a>
+          <article class="piece">
+            <span>Python</span>
+            <strong>Pike</strong>
+            <em>Chess engine</em>
+          </article>
+          <a class="piece" href="https://matthew-internship-seven.vercel.app/" target="_blank" rel="noreferrer">
+            <span>React</span>
+            <strong>Ultraverse</strong>
+            <em>Marketplace</em>
+          </a>
+        </div>
+        <div class="showcase-set" aria-hidden="true">
+          <a class="piece" tabindex="-1" href="https://github.com/Compl3xlife/opus" target="_blank" rel="noreferrer">
+            <span>Python</span>
+            <strong>Opus</strong>
+            <em>GitHub</em>
+          </a>
+          <a class="piece" tabindex="-1" href="https://angelesque444.angelesque444.workers.dev/" target="_blank" rel="noreferrer">
+            <span>JavaScript · Node</span>
+            <strong>Atelier</strong>
+            <em>Gallery</em>
+          </a>
+          <article class="piece">
+            <span>Python</span>
+            <strong>Pike</strong>
+            <em>Chess engine</em>
+          </article>
+          <a class="piece" tabindex="-1" href="https://matthew-internship-seven.vercel.app/" target="_blank" rel="noreferrer">
+            <span>React</span>
+            <strong>Ultraverse</strong>
+            <em>Marketplace</em>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="switcher" id="switcher">
+      <div class="rail">
+        <div class="tablist" id="tablist" role="tablist" aria-label="Resume sections" aria-orientation="vertical">
+          <span class="tab-bar" id="tab-bar" aria-hidden="true"></span>
+          <button class="tab" id="tab-profile" type="button" role="tab" aria-selected="true" aria-controls="panel-profile" tabindex="0">
+            <span class="num">01</span><span>Profile</span>
+          </button>
+          <button class="tab" id="tab-skills" type="button" role="tab" aria-selected="false" aria-controls="panel-skills" tabindex="-1">
+            <span class="num">02</span><span>Skills</span>
+          </button>
+          <button class="tab" id="tab-frontend" type="button" role="tab" aria-selected="false" aria-controls="panel-frontend" tabindex="-1">
+            <span class="num">03</span><span>Frontend</span>
+          </button>
+          <button class="tab" id="tab-backend" type="button" role="tab" aria-selected="false" aria-controls="panel-backend" tabindex="-1">
+            <span class="num">04</span><span>Backend</span>
+          </button>
+          <button class="tab" id="tab-certificate" type="button" role="tab" aria-selected="false" aria-controls="panel-certificate" tabindex="-1">
+            <span class="num">05</span><span>Certificate</span>
+          </button>
+          <button class="tab" id="tab-contact" type="button" role="tab" aria-selected="false" aria-controls="panel-contact" tabindex="-1">
+            <span class="num">06</span><span>Contact</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="stage" id="stage" data-dir="forward">
+        <p class="stage-index" id="stage-index" aria-hidden="true">01</p>
+        <div class="track" id="track">
+          <section class="panel" id="panel-profile" role="tabpanel" aria-labelledby="tab-profile" data-tab="profile">
+            <p class="kicker">Profile</p>
+            <h2>The screen, then the machine behind it.</h2>
+            <p class="copy">
+              FES Institute trained me across HTML, CSS, JavaScript, React, Next.js, Node.js, TypeScript, and Redux, then put that to work in an internship on Ultraverse, a React marketplace. On my own time I ship Python and Java: voice, networking, game servers, and a chess engine. Opus is the one I want in the room — a Windows tray app that answers to its name, and an iPhone app that does not need the PC.
+            </p>
+            <dl class="stats">
+              <div>
+                <dt>Certified skills</dt>
+                <dd data-count="8">08</dd>
+              </div>
+              <div>
+                <dt>Internship</dt>
+                <dd>Ultraverse</dd>
+              </div>
+              <div>
+                <dt>Systems piece</dt>
+                <dd>Opus</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="panel" id="panel-skills" role="tabpanel" aria-labelledby="tab-skills" data-tab="skills" hidden>
+            <p class="kicker">Skills</p>
+            <h2>Verified on paper. Replayed in the rig.</h2>
+            <p class="copy">The chips are the FES certificate. The rig is the same motion language as the tabs: align, scatter, cascade.</p>
+            <ul class="chips">
+              <li>HTML</li><li>CSS</li><li>JavaScript</li><li>React</li>
+              <li>Next.js</li><li>Node.js</li><li>TypeScript</li><li>Redux</li>
+            </ul>
+            <p class="also">Also shipping in <strong>Python</strong> and <strong>Java</strong> — Opus, Pike, LAN Mirror, Backpack.</p>
+            <div class="rig">
+              <div class="rig-controls" role="group" aria-label="Motion rig">
+                <button type="button" data-rig="align" aria-pressed="true">Align</button>
+                <button type="button" data-rig="scatter" aria-pressed="false">Scatter</button>
+                <button type="button" data-rig="cascade" aria-pressed="false">Cascade</button>
+                <button type="button" data-rig="replay">Replay</button>
+              </div>
+              <div class="rig-stage" id="rig-stage">
+                <i>HTML</i><i>CSS</i><i>JS</i><i>React</i><i>Next</i><i>Node</i>
+                <i>TS</i><i>Redux</i><i>Py</i><i>Java</i><i>UI</i><i>Git</i>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-frontend" role="tabpanel" aria-labelledby="tab-frontend" data-tab="frontend" hidden>
+            <p class="kicker">Frontend</p>
+            <h2>Four interfaces. Pick one and it plays.</h2>
+            <div class="work" data-reel="front">
+              <div class="work-list" role="listbox" aria-label="Frontend projects">
+                <button type="button" class="is-on" role="option" aria-selected="true" data-scene="atelier" data-live="https://angelesque444.angelesque444.workers.dev/" data-blurb="Atelier, a gallery and commission shop. Accounts, PayPal checkout, and an admin desk for listing pieces. JavaScript, Node, and Express.">
+                  <span class="num">01</span>
+                  <span><strong>Atelier</strong><em>JavaScript · Node</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="ultraverse" data-repo="https://github.com/Compl3xlife/Matthew-Internship" data-live="https://matthew-internship-seven.vercel.app/" data-blurb="Internship marketplace for FES Institute. Landing, explore, item details, authors, collections, and top sellers in React.">
+                  <span class="num">02</span>
+                  <span><strong>Ultraverse</strong><em>Internship · React</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="blinker" data-repo="https://github.com/Compl3xlife/js-final" data-blurb="Blinker, the car search from my JavaScript final. React, Vite, a movie watchlist, and a contact form. The car drives in, the wheels roll, the headlights blink.">
+                  <span class="num">03</span>
+                  <span><strong>Blinker</strong><em>React · Vite</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="library" data-repo="https://github.com/Compl3xlife/library" data-blurb="Bookstore landing page. Hierarchy, responsive layout, and a static front end that still feels finished.">
+                  <span class="num">04</span>
+                  <span><strong>Library</strong><em>Landing page</em></span>
+                </button>
+              </div>
+              <div class="work-stage">
+                <span class="bracket tl" aria-hidden="true"></span>
+                <span class="bracket tr" aria-hidden="true"></span>
+                <span class="bracket bl" aria-hidden="true"></span>
+                <span class="bracket br" aria-hidden="true"></span>
+                <div class="scene is-on play" data-scene="atelier">
+                  <a class="cover" href="https://angelesque444.angelesque444.workers.dev/" target="_blank" rel="noreferrer">
+                    <img src="assets/atelier-cover.svg" alt="Atelier cover art. Opens the gallery." />
+                  </a>
+                  <pre class="snippet"><span class="file">server.js</span><code>app.get("/", (req, res) =&gt; {
+  const filter = req.query.cat || "all";
+  let pieces = store.publicPieces();
+  if (filter === "furry" || filter === "other") {
+    pieces = pieces.filter((piece) =&gt; piece.category === filter);
+  }
+  if (filter === "sale") {
+    pieces = pieces.filter((piece) =&gt; piece.forSale &amp;&amp; !piece.sold);
+  }
+  res.render("home", { title: "Gallery", pieces, filter });
+});</code></pre>
+                </div>
+                <div class="scene" data-scene="ultraverse">
+                  <div class="demo">
+                    <div class="nft-back"></div>
+                    <article class="nft-card">
+                      <div class="nft-art"></div>
+                      <div class="nft-meta"><span>Ultraverse</span><strong>0.42 ETH</strong></div>
+                    </article>
+                  </div>
+                  <pre class="snippet"><span class="file">NewItems.jsx</span><code>const sliderConfig = {
+  loop: true,
+  slides: { perView: 1, spacing: 15 },
+  breakpoints: {
+    "(min-width: 1200px)": {
+      slides: { perView: 4, spacing: 15 },
+    },
+  },
+};</code></pre>
+                </div>
+                <div class="scene" data-scene="blinker">
+                  <div class="demo track">
+                    <div class="car">
+                      <div class="cabin"></div>
+                      <div class="body"></div>
+                      <i class="lamp"></i>
+                      <i class="wheel front"></i>
+                      <i class="wheel back"></i>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">Cars.jsx</span><code>useEffect(() =&gt; {
+  document.title = "Find your car | Blinker";
+}, []);
+
+const load = query.trim().toLowerCase() === "fast"
+  ? searchMovies("fast")
+  : searchCars(query, committed.min, committed.max);</code></pre>
+                </div>
+                <div class="scene" data-scene="library">
+                  <div class="demo">
+                    <div class="shelf">
+                      <i>HTML</i><i>CSS</i><i>JS</i><i>UI</i>
+                      <em></em>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">index.js</span><code>function openMenu() {
+  document.body.classList += " menu--open"
+}
+
+function closeMenu() {
+  document.body.classList.remove("menu--open")
+}</code></pre>
+                </div>
+              </div>
+              <div class="work-foot">
+                <p class="work-blurb"></p>
+                <div class="work-links">
+                  <a class="text-link repo" target="_blank" rel="noreferrer" href="https://github.com/Compl3xlife/Matthew-Internship" hidden>Source</a>
+                  <a class="text-link live" target="_blank" rel="noreferrer" href="https://angelesque444.angelesque444.workers.dev/">Site</a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-backend" role="tabpanel" aria-labelledby="tab-backend" data-tab="backend" hidden>
+            <p class="kicker">Backend</p>
+            <h2>Opus first. Then the rest of the stack.</h2>
+            <div class="work" data-reel="back">
+              <div class="work-list" role="listbox" aria-label="Backend projects">
+                <button type="button" class="is-on" role="option" aria-selected="true" data-scene="opus" data-repo="https://github.com/Compl3xlife/opus" data-blurb="Windows tray assistant. It waits for the wake word Opus, then answers with a cloud model. Screen questions, a browser extension, download scans, and a Discord bot with music and a chip economy. The phone version is a home-screen web app.">
+                  <span class="num">01</span>
+                  <span><strong>Opus</strong><em>Python · voice · phone</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="pike" data-blurb="UCI chess engine written from scratch. Bitboards, principal-variation search, classical eval, and a small self-play tuner. Not a Stockfish port.">
+                  <span class="num">02</span>
+                  <span><strong>Pike</strong><em>Python · search</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="lan" data-blurb="LAN Mirror. Phone-to-PC screen mirroring that stays on the local network. AirPlay and Cast, a tray app, and a firewall locked to the private subnet.">
+                  <span class="num">03</span>
+                  <span><strong>LAN Mirror</strong><em>Python · sockets</em></span>
+                </button>
+                <button type="button" role="option" aria-selected="false" data-scene="pack" data-blurb="Paper plugin. A 45-slot backpack plus a restock upgrade that refills the last block you placed. Java, Maven, per-player saves.">
+                  <span class="num">04</span>
+                  <span><strong>Backpack</strong><em>Java · Paper</em></span>
+                </button>
+              </div>
+              <div class="work-stage">
+                <span class="bracket tl" aria-hidden="true"></span>
+                <span class="bracket tr" aria-hidden="true"></span>
+                <span class="bracket bl" aria-hidden="true"></span>
+                <span class="bracket br" aria-hidden="true"></span>
+                <div class="scene is-on" data-scene="opus">
+                  <div class="demo">
+                    <div class="term">
+                      <header><i></i><i></i><i></i><span>opus</span></header>
+                      <pre id="term-out"></pre>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">tray.py</span><code>self.icon = pystray.Icon(
+    APP_NAME,
+    _icon_image(True),
+    APP_NAME,
+    menu=pystray.Menu(
+        pystray.MenuItem("Open panel", self._open, default=True),
+        pystray.MenuItem("Listening", self._toggle),
+        pystray.MenuItem("Quit Opus", self._quit),
+    ),
+)</code></pre>
+                </div>
+                <div class="scene" data-scene="pike">
+                  <div class="demo">
+                    <div class="board" id="board">
+                      <div class="knight" id="knight">N</div>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">search.py</span><code>for depth in range(1, max_depth + 1):
+    if self._time_up() and depth &gt; 1:
+        break
+    alpha, beta = -INF, INF
+    cur = self._negamax(pos, depth, alpha, beta, 0)
+    score = cur
+    best = self._root_best</code></pre>
+                </div>
+                <div class="scene" data-scene="lan">
+                  <div class="demo">
+                    <div class="devices">
+                      <div class="phone"></div>
+                      <svg class="beam" viewBox="0 0 140 16" aria-hidden="true">
+                        <line x1="0" y1="8" x2="140" y2="8" />
+                      </svg>
+                      <div class="monitor"><b></b></div>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">app.py</span><code>app = FastAPI(title="LAN Mirror", lifespan=lifespan)
+
+@app.get("/viewer")
+async def viewer() -&gt; HTMLResponse:
+    return _page("viewer.html")
+
+@app.get("/connect")
+async def connect_page() -&gt; HTMLResponse:
+    return _page("connect.html")</code></pre>
+                </div>
+                <div class="scene" data-scene="pack">
+                  <div class="demo">
+                    <div class="pack">
+                      <i class="on"></i><i class="on"></i><i></i><i class="on"></i><i></i>
+                      <i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="restock"></i>
+                    </div>
+                  </div>
+                  <pre class="snippet"><span class="file">PlayerBackpack.java</span><code>PlayerBackpack(int size) {
+    this.contents = new ItemStack[size];
+    this.restockUpgrade = false;
+}
+
+void setRestockUpgrade(boolean restockUpgrade) {
+    this.restockUpgrade = restockUpgrade;
+}</code></pre>
+                </div>
+              </div>
+              <div class="work-foot">
+                <p class="work-blurb"></p>
+                <div class="work-links">
+                  <a class="text-link repo" target="_blank" rel="noreferrer" href="https://github.com/Compl3xlife/opus">Source</a>
+                  <a class="text-link live" target="_blank" rel="noreferrer" href="https://github.com/Compl3xlife/opus" hidden>GitHub</a>
+                </div>
+              </div>
+            </div>
+            <p class="also">Also in the shop: Day Trade Scanner, a Topstep risk bot, the Faebound mod, and MC Lookup.</p>
+          </section>
+
+          <section class="panel" id="panel-certificate" role="tabpanel" aria-labelledby="tab-certificate" data-tab="certificate" hidden>
+            <p class="kicker">Certificate</p>
+            <h2>FES Institute graduation.</h2>
+            <div class="cert-layout">
+              <button class="cert-open" type="button" id="open-cert">
+                <img src="assets/certificate.png" width="1024" height="723" alt="Certificate of Graduation from FES Institute, awarded to Matthew Reath for frontend development. Signed by David Bragg, Founder." />
+              </button>
+              <div>
+                <p class="copy">Frontend development. Signed by David Bragg, Founder of FES Institute. It includes a practical internship — that project is Ultraverse.</p>
+                <ul class="cert-list">
+                  <li>HTML</li><li>CSS</li><li>JavaScript</li><li>React</li>
+                  <li>Next.js</li><li>Node.js</li><li>TypeScript</li><li>Redux</li>
+                </ul>
+                <p class="fine">Select the certificate to open it full size.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact" data-tab="contact" hidden>
+            <p class="kicker">Contact</p>
+            <h2>Write it. Your mail app sends it.</h2>
+            <div class="contact-grid">
+              <form id="contact-form">
+                <label>Name
+                  <input name="name" required autocomplete="name" />
+                </label>
+                <label>Your email
+                  <input name="email" type="email" required autocomplete="email" />
+                </label>
+                <label>Message
+                  <textarea name="message" rows="5" required></textarea>
+                </label>
+                <button class="btn btn-lime" type="submit">Email Matthew</button>
+                <p class="form-status" id="form-status" role="status"></p>
+              </form>
+              <div class="contact-side">
+                <a class="huge" href="mailto:matthewreath01@gmail.com">matthewreath01@gmail.com</a>
+                <a class="huge sub" href="https://github.com/Compl3xlife" target="_blank" rel="noreferrer">github.com/Compl3xlife</a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Matthew Reath</span>
+    <a href="https://github.com/Compl3xlife" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="mailto:matthewreath01@gmail.com">matthewreath01@gmail.com</a>
+  </footer>
+
+  <dialog id="cert-dialog">
+    <form method="dialog">
+      <button type="submit" class="btn btn-lime">Close</button>
+    </form>
+    <img src="assets/certificate.png" alt="FES Institute Certificate of Graduation awarded to Matthew Reath" />
+  </dialog>
+
+  <noscript>
+    <style>
+      .track { transform: none !important; flex-direction: column; }
+      .panel { display: block !important; width: auto !important; }
+      .stage { height: auto !important; overflow: visible !important; }
+    </style>
+  </noscript>
+  <script type="module" src="main.js?v=12"></script>
+</body>
+</html>

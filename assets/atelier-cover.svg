@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Gothic eye framed by tall ears">
+  <rect width="1200" height="700" fill="#070707"/>
+  <path d="M500 268 C496 196 524 150 562 156 C576 196 564 240 542 272 Z" fill="#f3efe6"/>
+  <path d="M518 258 C518 210 536 178 556 180 C562 208 554 236 540 260 Z" fill="#141414"/>
+  <path d="M700 268 C704 196 676 150 638 156 C624 196 636 240 658 272 Z" fill="#f3efe6"/>
+  <path d="M682 258 C682 210 664 178 644 180 C638 208 646 236 660 260 Z" fill="#141414"/>
+  <path d="M150 390 C340 230 860 230 1050 390 C860 545 340 545 150 390 Z" fill="#f3efe6"/>
+  <path d="M230 392 C390 285 810 285 970 392 C810 500 390 500 230 392 Z" fill="#070707"/>
+  <circle cx="600" cy="392" r="78" fill="none" stroke="#f3efe6" stroke-width="7"/>
+  <circle cx="600" cy="392" r="58" fill="none" stroke="#f3efe6" stroke-width="1.5" stroke-dasharray="2 6"/>
+  <circle cx="692" cy="392" r="4" fill="#f3efe6"/>
+  <circle cx="685" cy="427" r="4" fill="#f3efe6"/>
+  <circle cx="665" cy="457" r="4" fill="#f3efe6"/>
+  <circle cx="635" cy="475" r="4" fill="#f3efe6"/>
+  <circle cx="600" cy="482" r="4" fill="#f3efe6"/>
+  <circle cx="565" cy="475" r="4" fill="#f3efe6"/>
+  <circle cx="535" cy="457" r="4" fill="#f3efe6"/>
+  <circle cx="515" cy="427" r="4" fill="#f3efe6"/>
+  <circle cx="508" cy="392" r="4" fill="#f3efe6"/>
+  <circle cx="515" cy="357" r="4" fill="#f3efe6"/>
+  <circle cx="535" cy="327" r="4" fill="#f3efe6"/>
+  <circle cx="565" cy="309" r="4" fill="#f3efe6"/>
+  <circle cx="600" cy="302" r="4" fill="#f3efe6"/>
+  <circle cx="635" cy="309" r="4" fill="#f3efe6"/>
+  <circle cx="665" cy="327" r="4" fill="#f3efe6"/>
+  <circle cx="685" cy="357" r="4" fill="#f3efe6"/>
+  <ellipse cx="600" cy="392" rx="16" ry="34" fill="#f3efe6"/>
+  <ellipse cx="600" cy="392" rx="5" ry="20" fill="#070707"/>
+  <path d="M190 340 C280 250 390 230 470 270" fill="none" stroke="#070707" stroke-width="3"/>
+  <path d="M1010 340 C920 250 810 230 730 270" fill="none" stroke="#070707" stroke-width="3"/>
+  <path d="M250 455 C340 520 470 540 560 500" fill="none" stroke="#a33b46" stroke-width="2" opacity="0.8"/>
+</svg>
