@@ -61,7 +61,7 @@
 
 :root {
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --display: "Unbounded", "Arial Black", sans-serif;
+  --display: "Space Grotesk", "Arial", sans-serif;
   --sans: "Outfit", "Segoe UI", sans-serif;
 }
 
