@@ -1,1 +1,4 @@
 .deploy/
+font-preview.html
+node_modules/
+public/

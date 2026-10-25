@@ -1,0 +1,23 @@
+{
+  "name": "reath",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "deploy": "node scripts/stage-public.mjs && wrangler deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Compl3xlife/reath.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Compl3xlife/reath/issues"
+  },
+  "homepage": "https://github.com/Compl3xlife/reath#readme",
+  "devDependencies": {
+    "wrangler": "^4.152.0"
+  }
+}
