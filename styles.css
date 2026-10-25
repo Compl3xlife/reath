@@ -262,6 +262,36 @@ h1 .outline {
 .btn-lime { background: var(--lime); color: var(--lime-ink); font-weight: 600; }
 .btn-ghost { background: transparent; border-color: var(--line); }
 
+.ticker {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  padding: 0.75rem 0;
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.ticker-set {
+  display: flex;
+  gap: 2.2rem;
+  padding-right: 2.2rem;
+  font-family: var(--display);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ticker-set span::before {
+  content: "";
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-right: 2.2rem;
+  background: var(--lime);
+  vertical-align: 0.05em;
+}
+
 .showcase {
   overflow: hidden;
   border-block: 1px solid var(--line);

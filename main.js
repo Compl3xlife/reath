@@ -774,6 +774,51 @@ if (showcaseRoot && showcaseSet) {
   requestAnimationFrame(runShowcase);
 }
 
+const tickerRoot = document.querySelector(".ticker");
+const ticker = document.querySelector("#ticker-track");
+const tickerSet = ticker?.querySelector(".ticker-set");
+let tickerX = 0;
+let tickerLast = 0;
+
+function tickerSpan() {
+  const twin = tickerSet?.nextElementSibling;
+  if (!tickerSet || !twin) return 0;
+  return twin.offsetLeft - tickerSet.offsetLeft;
+}
+
+function fillTicker() {
+  const span = tickerSpan();
+  if (!span || !tickerRoot) return 0;
+  const needed = Math.ceil((tickerRoot.clientWidth + span) / span) + 1;
+  while (ticker.querySelectorAll(".ticker-set").length < needed) {
+    const clone = tickerSet.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    ticker.append(clone);
+  }
+  return span;
+}
+
+function runTicker(now) {
+  if (!tickerLast) tickerLast = now;
+  const dt = Math.min(48, now - tickerLast);
+  tickerLast = now;
+  const width = fillTicker();
+  if (width) {
+    tickerX = (tickerX + (width / 18000) * dt) % width;
+    ticker.style.transform = `translate3d(${-tickerX}px, 0, 0)`;
+  }
+  requestAnimationFrame(runTicker);
+}
+
+if (tickerRoot && tickerSet) {
+  fillTicker();
+  window.addEventListener("resize", fillTicker);
+  document.addEventListener("visibilitychange", () => {
+    tickerLast = 0;
+  });
+  requestAnimationFrame(runTicker);
+}
+
 const start = Math.max(0, ids.indexOf(location.hash.replace("#", "")));
 layoutRig("align", false);
 select(start, start ? "replace" : "none");
